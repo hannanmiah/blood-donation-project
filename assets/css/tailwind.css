@@ -19,7 +19,7 @@ body {
 }
 
 .btn {
-    @apply p-2 rounded-md cursor-pointer transition-all duration-300 ease-in-out;
+    @apply p-2 rounded-md cursor-pointer font-bold transition-all duration-300 ease-in-out;
 }
 
 .btn-primary {
@@ -32,4 +32,16 @@ body {
 
 .btn-success {
     @apply bg-green-500 text-primary-text hover:bg-green-600 focus:bg-green-700 focus:outline-none;
+}
+
+.multi-form-group {
+    @apply flex justify-between items-center space-x-1;
+}
+
+.form-group {
+    @apply flex flex-col justify-between space-y-1 md:space-y-2;
+}
+
+.form-control {
+    @apply flex flex-col space-y-1 sm:space-y-2 md:space-y-3 lg:space-y-4 justify-between;
 }

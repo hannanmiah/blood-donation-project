@@ -1,5 +1,5 @@
 <template>
-  <div class="card p-1">
+  <div class="card p-1 sm:p-2 md:p-3 lg:p-4">
     <div class="flex items-center justify-between mx-1">
       <div class="flex items-center space-x-2">
         <div class="">

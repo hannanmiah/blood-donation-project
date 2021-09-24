@@ -1,11 +1,11 @@
 <template>
   <main
     class="
-      px-2
-      sm:px-4
-      md:px-6
-      lg:px-8
-      xl:px-10
+      px-1
+      sm:px-2
+      md:px-3
+      lg:px-4
+      xl:px-5
       relative
       z-0
       grid grid-cols-4
@@ -31,8 +31,6 @@
         lg:space-y-8
       "
     >
-      <home-search-card></home-search-card>
-      <home-donor-card></home-donor-card>
       <home-post-card></home-post-card>
       <home-post-card></home-post-card>
       <home-post-card></home-post-card>
