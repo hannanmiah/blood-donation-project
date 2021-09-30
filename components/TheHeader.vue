@@ -37,11 +37,35 @@
             d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"
           ></path>
         </svg>
-        <NuxtLink to="/"
+        <NuxtLink :to="{name: 'index'}"
           ><h1 class="text-xl text-center text-primary">
             জীবন বাঁচান
           </h1></NuxtLink
         >
+      </div>
+      <div class="relative flex">
+        <input
+          type="text"
+          class="input cursor-pointer w-40 sm:w-60 md:w-80 lg:w-96"
+          placeholder="ডোনার খুঁজুন"
+          @click="toggleModal('search')"
+        />
+        <span class="absolute top-3 right-2"
+          ><svg
+            aria-hidden="true"
+            focusable="true"
+            data-prefix="fas"
+            data-icon="search"
+            class="w-4 h-4 text-[#ddd]"
+            role="img"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 512 512"
+          >
+            <path
+              fill="currentColor"
+              d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+            ></path></svg
+        ></span>
       </div>
       <nav
         class="
@@ -53,17 +77,21 @@
           lg:space-x-4
         "
       >
-        <button class="btn btn-primary hidden md:inline-block" @click="login">
+        <button v-if="!store.getters.isAuthenticated" class="btn btn-primary" @click="login">
           লগিন
         </button>
         <button
-          class="btn btn-primary hidden md:inline-block"
+          v-if="!store.getters.isAuthenticated"
+          class="btn btn-primary"
           @click="register"
         >
           নিবন্ধন
         </button>
-        <button class="btn btn-primary" @click="toggleModal('post')">
+        <button v-if="store.getters.isAuthenticated" class="btn btn-primary" @click="toggleModal('post')">
           আবেদন
+        </button>
+        <button v-if="store.getters.isAuthenticated" class="btn btn-primary" @click="logout">
+          লগআউট
         </button>
         <button class="btn md:hidden" @click="toggleModal('notification')">
           <svg
@@ -185,14 +213,57 @@
           ></path>
         </svg>
       </div>
+      <div
+        v-else-if="activeModal == 'search'"
+        class="
+          modal
+          z-[13]
+          col-span-4
+          p-2
+          sm:p-4
+          md:p-6
+          lg:p-8
+          xl:p-10
+          overflow-y-scroll
+        "
+      >
+        <home-search-card> </home-search-card>
+        <svg
+          aria-hidden="true"
+          focusable="true"
+          data-prefix="far"
+          data-icon="times-circle"
+          class="
+            w-8
+            h-8
+            absolute
+            top-4
+            right-[50%]
+            left-[50%]
+            text-primary
+            hover:text-secondary
+            cursor-pointer
+          "
+          role="img"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 512 512"
+          @click="resetModal"
+        >
+          <path
+            fill="currentColor"
+            d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm101.8-262.2L295.6 256l62.2 62.2c4.7 4.7 4.7 12.3 0 17l-22.6 22.6c-4.7 4.7-12.3 4.7-17 0L256 295.6l-62.2 62.2c-4.7 4.7-12.3 4.7-17 0l-22.6-22.6c-4.7-4.7-4.7-12.3 0-17l62.2-62.2-62.2-62.2c-4.7-4.7-4.7-12.3 0-17l22.6-22.6c4.7-4.7 12.3-4.7 17 0l62.2 62.2 62.2-62.2c4.7-4.7 12.3-4.7 17 0l22.6 22.6c4.7 4.7 4.7 12.3 0 17z"
+          ></path>
+        </svg>
+      </div>
     </transition>
   </div>
 </template>
 
 <script>
-import { ref, useRouter } from '@nuxtjs/composition-api'
+import { ref, useRouter, useStore } from '@nuxtjs/composition-api'
 export default {
   setup() {
+    const store = useStore()
     const activeModal = ref('')
     const router = useRouter()
 
@@ -205,18 +276,26 @@ export default {
     }
 
     function login() {
-      router.push('login')
+      router.push({ name: 'login' })
     }
 
     function register() {
-      router.push('register')
+      router.push({ name: 'register' })
     }
+
+    function logout(){
+      store.dispatch('logout')
+      router.push('login')
+    }
+
     return {
+      store,
       activeModal,
       resetModal,
       toggleModal,
       login,
       register,
+      logout
     }
   },
 }
@@ -233,12 +312,14 @@ export default {
   right: 0;
 }
 
-.modal-enter, .modal-leave-to {
+.modal-enter,
+.modal-leave-to {
   transform: translateY(-100px);
   opacity: 0.5;
 }
 
-.modal-enter-active, .modal-leave-active {
+.modal-enter-active,
+.modal-leave-active {
   transition: all 0.3s ease-in;
 }
 </style>

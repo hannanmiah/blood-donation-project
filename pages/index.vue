@@ -2,6 +2,13 @@
   <the-main></the-main>
 </template>
 
-<script></script>
+<script>
+export default {
+  middleware: 'auth',
+  setup() {
+    
+  },
+}
+</script>
 
 <style scoped></style>
