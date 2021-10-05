@@ -35,11 +35,11 @@ body {
 }
 
 .multi-form-group {
-    @apply flex justify-between items-center space-x-1;
+    @apply flex justify-between items-center space-x-1 sm:space-x-2 md:space-x-4;
 }
 
 .form-group {
-    @apply flex flex-col justify-between space-y-1 md:space-y-2;
+    @apply w-full flex flex-col justify-between space-y-1 md:space-y-2;
 }
 
 .form-control {

@@ -1,14 +1,21 @@
 <template>
-  <div class="card p-1 sm:p-2 md:p-3 lg:p-4">
+  <article class="card p-1 sm:p-2 md:p-3 lg:p-4">
     <div class="flex items-center justify-between mx-1">
       <div class="flex items-center space-x-2">
-        <div class="">
+        <div class="text-center p-2 md:p-4 border md:border-2 rounded-full">
           <svg
             aria-hidden="true"
             focusable="false"
             data-prefix="fas"
             data-icon="user-tie"
-            class="text-secondary-text w-8 h-8"
+            class="
+              text-secondary-text
+              w-4
+              h-4
+              sm:w-6 sm:h-6
+              md:w-8 md:h-8
+              lg:w-10 lg:h-10
+            "
             role="img"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 448 512"
@@ -20,70 +27,123 @@
           </svg>
         </div>
         <div class="flex flex-col justify-center">
-          <h3 class="font-bold">হান্নান মিয়া</h3>
-          <h5 class="text-sm text-secondary-text">
-            ময়মনসিংহ মেডিকেল কলেজ হাসপাতাল
-          </h5>
+          <h3 class="font-bold sm:text-lg md:text-xl lg:text-2xl xl:text-3xl">
+            হান্নান মিয়া
+          </h3>
+          <section class="flex items-center space-x-2">
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              data-prefix="fas"
+              data-icon="map-marker-alt"
+              class="w-2 h-2 md:w-4 md:h-4 text-secondary-text"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 384 512"
+            >
+              <path
+                fill="currentColor"
+                d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z"
+              ></path>
+            </svg>
+            <h5 class="text-sm md:text-base text-secondary-text">
+              {{ post.location }}
+            </h5>
+          </section>
+          <section class="flex items-center space-x-2">
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              data-prefix="fas"
+              data-icon="eye-dropper"
+              class="w-2 h-2 md:w-4 md:h-4 text-secondary-text"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+            >
+              <path
+                fill="currentColor"
+                d="M50.75 333.25c-12 12-18.75 28.28-18.75 45.26V424L0 480l32 32 56-32h45.49c16.97 0 33.25-6.74 45.25-18.74l126.64-126.62-128-128L50.75 333.25zM483.88 28.12c-37.47-37.5-98.28-37.5-135.75 0l-77.09 77.09-13.1-13.1c-9.44-9.44-24.65-9.31-33.94 0l-40.97 40.97c-9.37 9.37-9.37 24.57 0 33.94l161.94 161.94c9.44 9.44 24.65 9.31 33.94 0L419.88 288c9.37-9.37 9.37-24.57 0-33.94l-13.1-13.1 77.09-77.09c37.51-37.48 37.51-98.26.01-135.75z"
+              ></path>
+            </svg>
+            <h5 class="text-sm md:text-base text-primary">
+              {{ post.disease }}
+            </h5>
+          </section>
         </div>
       </div>
-      <div class="relative">
-        <svg
-          id="Layer_1"
-          class="h-8 w-8"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          x="0px"
-          y="0px"
-          viewBox="0 0 512 512"
-          style="enable-background: new 0 0 512 512"
-          xml:space="preserve"
-        >
-          <path
-            style="fill: #ff5e5b"
-            d="M256,512c-104.509,0-189.535-85.025-189.535-189.535c0-85.316,122.967-251.917,174.646-315.388
+      <section class="flex flex-col space-y-1 md:space-y-2 justify-center">
+        <div class="relative">
+          <svg
+            class="h-8 w-8 md:h-12 md:w-12"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            viewBox="0 0 512 512"
+            style="enable-background: new 0 0 512 512"
+            xml:space="preserve"
+          >
+            <path
+              style="fill: #ff5e5b"
+              d="M256,512c-104.509,0-189.535-85.025-189.535-189.535c0-85.316,122.967-251.917,174.646-315.388
 	c7.683-9.435,22.104-9.423,29.778,0c51.679,63.471,174.646,229.92,174.646,315.388C445.535,426.975,360.509,512,256,512z"
-          />
-          <g>
-            <path
-              style="fill: #ff423d"
-              d="M126.982,322.465c0-6.528,1.773-21.673,13.646-49.772c9.875-23.37,45.257-8.448,35.372,14.947
+            />
+            <g>
+              <path
+                style="fill: #ff423d"
+                d="M126.982,322.465c0-6.528,1.773-21.673,13.646-49.772c9.875-23.37,45.257-8.448,35.372,14.947
 		c-10.483,24.809-10.618,34.728-10.618,34.825C165.348,348.178,126.982,347.814,126.982,322.465z"
-            />
-            <path
-              style="fill: #ff423d"
-              d="M270.889,7.077C267.25,2.609,261.788,0,255.996,0v512c0.001,0,0.003,0,0.004,0
+              />
+              <path
+                style="fill: #ff423d"
+                d="M270.889,7.077C267.25,2.609,261.788,0,255.996,0v512c0.001,0,0.003,0,0.004,0
 		c104.509,0,189.535-85.025,189.535-189.535C445.535,237.149,322.548,70.515,270.889,7.077z"
-            />
-          </g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-        </svg>
-        <span class="absolute top-2 left-2 text-sm text-white">A+</span>
-      </div>
+              />
+            </g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+          </svg>
+          <span
+            class="absolute top-2 left-2 md:top-4 md:left-4 text-sm text-white"
+            >{{ post.bloodGroup }}</span
+          >
+        </div>
+        <span class="text-sm md:text-base text-center text-gray-400">{{
+          post.amount
+        }}</span>
+      </section>
     </div>
     <div class="flex justify-center items-center rounded-md bg-secondary p-4">
       <h3 class="text-primary-text">
-        এক প্রসূতি মায়ের জন্যে জরুরী ভিত্তিতে ১ ব্যাগ A+ রক্তের প্রয়োজন। আগ্রহী
-        ব্যক্তিগণকে নিচের দেয়া নাম্বারে যোগাযোগের বিনীত অনুরোধ করা হচ্ছে।
+        {{ post.body }}
       </h3>
     </div>
     <div class="flex justify-between items-center mx-2">
       <div class="flex justify-between space-x-2 items-center">
-        <button class="text-center text-secondary-text hover:text-primary">
+        <button
+          class="
+            group
+            hover:bg-gray-300
+            rounded-full
+            p-2
+            md:p-4
+            text-center text-secondary-text
+            hover:text-primary
+          "
+        >
           <svg
             aria-hidden="true"
             focusable="false"
@@ -91,11 +151,13 @@
             data-icon="phone-alt"
             class="
               h-4
+              md:h-6
               w-4
+              md:w-6
               text-secondary-text
               cursor-pointer
               focus:text-secondary
-              hover:text-primary
+              group-hover:text-primary
             "
             role="img"
             xmlns="http://www.w3.org/2000/svg"
@@ -107,7 +169,17 @@
             ></path>
           </svg>
         </button>
-        <button class="text-center text-secondary-text hover:text-primary">
+        <button
+          class="
+            group
+            hover:bg-gray-300
+            rounded-full
+            p-2
+            md:p-4
+            text-center text-secondary-text
+            hover:text-primary
+          "
+        >
           <svg
             aria-hidden="true"
             focusable="false"
@@ -115,11 +187,13 @@
             data-icon="comment"
             class="
               h-4
+              md:h-6
               w-4
+              md:w-6
               text-secondary-text
               cursor-pointer
               focus:text-secondary
-              hover:text-primary
+              group-hover:text-primary
             "
             role="img"
             xmlns="http://www.w3.org/2000/svg"
@@ -133,37 +207,60 @@
         </button>
         <button
           class="
+            group
+            hover:bg-gray-300
+            rounded-full
+            p-2
+            md:p-4
             text-center text-secondary-text
             hover:text-primary
-            focus:text-secondary
           "
         >
           <svg
             aria-hidden="true"
             focusable="false"
-            data-prefix="fas"
-            data-icon="calendar-plus"
-            class="w-4 h-4 text-secondary-text hover:text-primary"
+            data-prefix="far"
+            data-icon="heart"
+            class="
+              h-4
+              md:h-6
+              w-4
+              md:w-6
+              text-secondary-text
+              cursor-pointer
+              focus:text-secondary
+              group-hover:text-primary
+            "
             role="img"
             xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 448 512"
+            viewBox="0 0 512 512"
           >
             <path
               fill="currentColor"
-              d="M436 160H12c-6.6 0-12-5.4-12-12v-36c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48v36c0 6.6-5.4 12-12 12zM12 192h424c6.6 0 12 5.4 12 12v260c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V204c0-6.6 5.4-12 12-12zm316 140c0-6.6-5.4-12-12-12h-60v-60c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v60h-60c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h60v60c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12v-60h60c6.6 0 12-5.4 12-12v-40z"
+              d="M458.4 64.3C400.6 15.7 311.3 23 256 79.3 200.7 23 111.4 15.6 53.6 64.3-21.6 127.6-10.6 230.8 43 285.5l175.4 178.7c10 10.2 23.4 15.9 37.6 15.9 14.3 0 27.6-5.6 37.6-15.8L469 285.6c53.5-54.7 64.7-157.9-10.6-221.3zm-23.6 187.5L259.4 430.5c-2.4 2.4-4.4 2.4-6.8 0L77.2 251.8c-36.5-37.2-43.9-107.6 7.3-150.7 38.9-32.7 98.9-27.8 136.5 10.5l35 35.7 35-35.7c37.8-38.5 97.8-43.2 136.5-10.6 51.1 43.1 43.5 113.9 7.3 150.8z"
             ></path>
           </svg>
         </button>
       </div>
       <div class="flex justify-end items-center">
-        <h6 class="text-xs text-secondary-text">৫ মিনিট আগে</h6>
+        <h6 class="text-xs sm:text-sm md:text-base text-secondary-text">
+          ৫ মিনিট আগে
+        </h6>
       </div>
     </div>
-  </div>
+  </article>
 </template>
 
 <script>
-export default {}
+export default {
+  props: {
+    post: {
+      type: Object,
+      required: true,
+    },
+  },
+  setup() {},
+}
 </script>
 
 <style></style>

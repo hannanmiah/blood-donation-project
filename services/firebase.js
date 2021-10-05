@@ -1,5 +1,6 @@
 import { initializeApp } from "@firebase/app"
-import { getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword,signOut } from "@firebase/auth"
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "@firebase/auth"
+import {getFirestore} from '@firebase/firestore'
 
 const config = {
   apiKey: 'AIzaSyB9G-xo_ErbV_iasAuXo-Xh6ncn4BVHeok',
@@ -14,6 +15,7 @@ const config = {
 // Initialize Firebase
 const app = initializeApp(config)
 const auth = getAuth(app)
+const firestore = getFirestore(app)
 const signIn = function (form) {
   if (form.email && form.password) {
     return signInWithEmailAndPassword(auth, form.email, form.password)
@@ -44,6 +46,7 @@ const logOut = function () {
 export default {
   app,
   auth,
+  firestore,
   signIn,
   signUp,
   signOut: logOut

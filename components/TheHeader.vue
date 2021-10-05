@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col sticky top-0 z-10">
+  <div class="flex flex-col">
     <header
       class="
         py-2
@@ -30,14 +30,14 @@
           role="img"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 448 512"
-          @click="toggleModal('request')"
+          @click="$emit('setModal','donor')"
         >
           <path
             fill="currentColor"
             d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"
           ></path>
         </svg>
-        <NuxtLink :to="{name: 'index'}"
+        <NuxtLink :to="{ name: 'index' }"
           ><h1 class="text-xl text-center text-primary">
             জীবন বাঁচান
           </h1></NuxtLink
@@ -77,26 +77,24 @@
           lg:space-x-4
         "
       >
-        <button v-if="!store.getters.isAuthenticated" class="btn btn-primary" @click="login">
+        <button v-if="!isLoggedIn" class="btn btn-primary" @click="login">
           লগিন
         </button>
-        <button
-          v-if="!store.getters.isAuthenticated"
-          class="btn btn-primary"
-          @click="register"
-        >
+        <button v-if="!isLoggedIn" class="btn btn-primary" @click="register">
           নিবন্ধন
         </button>
-        <button v-if="store.getters.isAuthenticated" class="btn btn-primary" @click="toggleModal('post')">
+        <button
+          v-if="isLoggedIn"
+          class="btn btn-primary"
+          @click="$router.push({ name: 'posts-create' })"
+        >
           আবেদন
         </button>
-        <button v-if="store.getters.isAuthenticated" class="btn btn-primary" @click="logout">
-          লগআউট
-        </button>
-        <button class="btn md:hidden" @click="toggleModal('notification')">
+
+        <button class="btn md:hidden" @click="$emit('setModal','notification')">
           <svg
             aria-hidden="true"
-            focusable="false"
+            focusable="true"
             data-prefix="far"
             data-icon="bell"
             class="h-8 w-8 text-primary"
@@ -110,111 +108,52 @@
             ></path>
           </svg>
         </button>
+        <div
+          v-if="isLoggedIn"
+          class="
+            group
+            p-1
+            rounded-full
+            border-2 border-gray-300
+            overflow-hidden
+            hover:cursor-pointer hover:border-primary
+          "
+          @click="toggleMenu"
+        >
+          <svg
+            aria-hidden="true"
+            focusable="false"
+            data-prefix="fas"
+            data-icon="user-tie"
+            class="text-secondary-text h-8 w-8 group-hover:text-primary"
+            role="img"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 448 512"
+          >
+            <path
+              fill="currentColor"
+              d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm95.8 32.6L272 480l-32-136 32-56h-96l32 56-32 136-47.8-191.4C56.9 292 0 350.3 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-72.1-56.9-130.4-128.2-133.8z"
+            ></path>
+          </svg>
+        </div>
       </nav>
     </header>
     <transition name="modal">
-      <div v-if="activeModal == 'request'" class="modal z-[11] col-span-4 p-10">
-        <home-request-card></home-request-card>
-        <svg
-          aria-hidden="true"
-          focusable="true"
-          data-prefix="far"
-          data-icon="times-circle"
-          class="
-            w-8
-            h-8
-            absolute
-            top-4
-            left-4
-            text-primary
-            hover:text-secondary
-            cursor-pointer
-          "
-          role="img"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 512 512"
-          @click="resetModal"
-        >
-          <path
-            fill="currentColor"
-            d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm101.8-262.2L295.6 256l62.2 62.2c4.7 4.7 4.7 12.3 0 17l-22.6 22.6c-4.7 4.7-12.3 4.7-17 0L256 295.6l-62.2 62.2c-4.7 4.7-12.3 4.7-17 0l-22.6-22.6c-4.7-4.7-4.7-12.3 0-17l62.2-62.2-62.2-62.2c-4.7-4.7-4.7-12.3 0-17l22.6-22.6c4.7-4.7 12.3-4.7 17 0l62.2 62.2 62.2-62.2c4.7-4.7 12.3-4.7 17 0l22.6 22.6c4.7 4.7 4.7 12.3 0 17z"
-          ></path>
-        </svg>
-      </div>
       <div
-        v-else-if="activeModal == 'notification'"
-        class="modal z-[12] col-span-4 p-10"
+        v-if="menuIsVisible && isLoggedIn"
+        class="fixed rounded-md z-[-1] top-20 right-0 flex justify-end"
       >
-        <home-notification-card></home-notification-card>
-        <svg
-          aria-hidden="true"
-          focusable="true"
-          data-prefix="far"
-          data-icon="times-circle"
-          class="
-            w-8
-            h-8
-            absolute
-            top-4
-            right-4
-            text-primary
-            hover:text-secondary
-            cursor-pointer
-          "
-          role="img"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 512 512"
-          @click="resetModal"
-        >
-          <path
-            fill="currentColor"
-            d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm101.8-262.2L295.6 256l62.2 62.2c4.7 4.7 4.7 12.3 0 17l-22.6 22.6c-4.7 4.7-12.3 4.7-17 0L256 295.6l-62.2 62.2c-4.7 4.7-12.3 4.7-17 0l-22.6-22.6c-4.7-4.7-4.7-12.3 0-17l62.2-62.2-62.2-62.2c-4.7-4.7-4.7-12.3 0-17l22.6-22.6c4.7-4.7 12.3-4.7 17 0l62.2 62.2 62.2-62.2c4.7-4.7 12.3-4.7 17 0l22.6 22.6c4.7 4.7 4.7 12.3 0 17z"
-          ></path>
-        </svg>
+        <div class="flex flex-col bg-white border p-4">
+          <button class="btn hover:bg-gray-300" @click="profile">
+            Profile
+          </button>
+          <button class="btn hover:bg-gray-300" @click="logout">logout</button>
+        </div>
       </div>
+    </transition>
+    <transition name="modal">
       <div
-        v-else-if="activeModal == 'post'"
-        class="
-          modal
-          z-[12]
-          col-span-4
-          p-2
-          sm:p-4
-          md:p-6
-          lg:p-8
-          xl:p-10
-          overflow-y-scroll
-        "
-      >
-        <home-create-post> </home-create-post>
-        <svg
-          aria-hidden="true"
-          focusable="true"
-          data-prefix="far"
-          data-icon="times-circle"
-          class="
-            w-8
-            h-8
-            absolute
-            top-4
-            right-4
-            text-primary
-            hover:text-secondary
-            cursor-pointer
-          "
-          role="img"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 512 512"
-          @click="resetModal"
-        >
-          <path
-            fill="currentColor"
-            d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm101.8-262.2L295.6 256l62.2 62.2c4.7 4.7 4.7 12.3 0 17l-22.6 22.6c-4.7 4.7-12.3 4.7-17 0L256 295.6l-62.2 62.2c-4.7 4.7-12.3 4.7-17 0l-22.6-22.6c-4.7-4.7-4.7-12.3 0-17l62.2-62.2-62.2-62.2c-4.7-4.7-4.7-12.3 0-17l22.6-22.6c4.7-4.7 12.3-4.7 17 0l62.2 62.2 62.2-62.2c4.7-4.7 12.3-4.7 17 0l22.6 22.6c4.7 4.7 4.7 12.3 0 17z"
-          ></path>
-        </svg>
-      </div>
-      <div
-        v-else-if="activeModal == 'search'"
+        v-if="activeModal == 'search'"
         class="
           modal
           z-[13]
@@ -260,15 +199,22 @@
 </template>
 
 <script>
-import { ref, useRouter, useStore } from '@nuxtjs/composition-api'
+import { ref, computed, useRouter, useStore } from '@nuxtjs/composition-api'
 export default {
   setup() {
     const store = useStore()
+    const isLoggedIn = computed(() => store.getters.isAuthenticated)
     const activeModal = ref('')
+    const menuIsVisible = ref(false)
     const router = useRouter()
 
     function toggleModal(modalName) {
       activeModal.value = modalName
+    }
+
+    function toggleMenu() {
+      menuIsVisible.value = !menuIsVisible.value
+      console.log('mouse over!')
     }
 
     function resetModal() {
@@ -279,23 +225,31 @@ export default {
       router.push({ name: 'login' })
     }
 
+    function profile() {
+      router.push({ name: 'profile' })
+      toggleMenu()
+    }
+
     function register() {
       router.push({ name: 'register' })
     }
 
-    function logout(){
+    function logout() {
       store.dispatch('logout')
-      router.push('login')
+      toggleMenu()
     }
 
     return {
-      store,
+      isLoggedIn,
       activeModal,
+      menuIsVisible,
       resetModal,
       toggleModal,
+      toggleMenu,
+      profile,
       login,
       register,
-      logout
+      logout,
     }
   },
 }

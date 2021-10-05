@@ -51,13 +51,11 @@
 
 <script>
 import { reactive, useStore } from '@nuxtjs/composition-api'
-import firebase from '@/services/firebase'
 
 export default {
   middleware: 'guest',
   setup() {
     const store = useStore()
-    console.log(firebase.auth.currentUser)
     const form = reactive({
       email: '',
       password: '',
