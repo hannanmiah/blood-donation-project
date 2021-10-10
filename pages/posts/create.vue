@@ -1,5 +1,8 @@
 <template>
   <div class="card p-1 sm:p-2 md:p-3 lg:p-4">
+    <h1 class="text-center text-3xl text-secondary">
+      একটি নতুন আবেদন তৈরি করুনঃ
+    </h1>
     <form class="form-control" @submit.prevent="post">
       <div class="multi-form-group">
         <div class="form-group">
@@ -122,7 +125,7 @@
           পোস্টের সাথে একটি আবেদন যুক্ত করুন
         </label>
       </div>
-      <button type="submit" class="btn btn-success">পোস্ট করুন</button>
+      <button type="submit" class="btn btn-primary">পোস্ট করুন</button>
     </form>
   </div>
 </template>
@@ -169,8 +172,6 @@ export default {
 
       if (!form.time) pushError('time', 'must be given')
 
-      if (!form.exchange) pushError('exchange', 'must be given field!')
-
       if (!form.body) pushError('body', 'must have some words!')
     }
 
@@ -187,10 +188,13 @@ export default {
       if (formError.value.length === 0) {
         store.dispatch('posts/addPost', {
           uid: store.getters.user.uid,
+          createdAt: new Date().toLocaleString(),
           ...form,
         })
 
         clearForm()
+      } else {
+        console.log('there was en error!')
       }
     }
 

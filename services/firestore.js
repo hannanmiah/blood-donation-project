@@ -4,7 +4,11 @@ import {
   setDoc,
   collection,
   addDoc,
+  query,
+  orderBy,
+  limit,
   getDocs,
+  onSnapshot
 } from '@firebase/firestore'
 
 const db = getFirestore()
@@ -13,13 +17,13 @@ const addData = async (coll, data, id) => {
   let docRef
   if (id) {
     try {
-      docRef = await setDoc(doc(db, coll, id), data)
+      await setDoc(doc(db, coll, id), data)
     } catch (error) {
       console.error(error.message)
     }
   } else {
     try {
-      await addDoc(collection(db, coll), data)
+      docRef = await addDoc(collection(db, coll), data)
     } catch (error) {
       console.error(error.message)
     }
@@ -31,12 +35,15 @@ const addData = async (coll, data, id) => {
 const fetchAllData = async (coll) => {
   const data = []
   try {
-    const dataSnapshot = await getDocs(collection(db, coll))
-    dataSnapshot.forEach((doc) => {
-      data.push({
+    const q = query(collection(db, coll), orderBy('createdAt','asc'), limit(10))
+    const querySnapshot = await getDocs(q)
+    querySnapshot.forEach((doc) => {
+      const storedData = {
         id: doc.id,
-        ...doc.data(),
-      })
+        ...doc.data()
+      }
+
+      data.push(storedData)
     })
   } catch (error) {
     console.error(error.message)
@@ -45,4 +52,16 @@ const fetchAllData = async (coll) => {
   return data
 }
 
-export default { addData, fetchAllData }
+const onCreated = function (col,callback) {
+  onSnapshot(collection(db, col), (snapshot) => {
+    snapshot.docChanges().forEach(change => {
+      if (change.type === 'added') {
+        callback(change.doc.data())
+      }
+    })
+  }, (error) => {
+    console.error('error',error.code,error.message)
+  })
+}
+
+export default { addData, fetchAllData ,onCreated}

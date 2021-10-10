@@ -3,13 +3,13 @@ import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, si
 import {getFirestore} from '@firebase/firestore'
 
 const config = {
-  apiKey: 'AIzaSyB9G-xo_ErbV_iasAuXo-Xh6ncn4BVHeok',
-  authDomain: 'blood-donation-project-124a6.firebaseapp.com',
-  projectId: 'blood-donation-project-124a6',
-  storageBucket: 'blood-donation-project-124a6.appspot.com',
-  messagingSenderId: '330045086063',
-  appId: '1:330045086063:web:9b828d4c0da9912dd0309a',
-  measurementId: 'G-YCWNLRPJC0',
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
+  measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 }
 
 // Initialize Firebase

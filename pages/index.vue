@@ -2,7 +2,7 @@
   <main class="">
     <div class="">
       <div
-        v-if="posts"
+        v-if="posts.length"
         class="
           flex flex-col
           justify-center
@@ -13,28 +13,13 @@
         "
       >
         <home-post-card
-          v-for="post in posts"
-          :key="post.uid"
-          :post="post"
-        ></home-post-card>
-        <home-post-card
-          v-for="post in posts"
-          :key="post.uid"
-          :post="post"
-        ></home-post-card>
-        <home-post-card
-          v-for="post in posts"
-          :key="post.uid"
-          :post="post"
-        ></home-post-card>
-        <home-post-card
-          v-for="post in posts"
-          :key="post.uid"
+          v-for="(post, index) in posts"
+          :key="post.uid + index"
           :post="post"
         ></home-post-card>
       </div>
       <div v-else>
-        <p>No posts available!</p>
+        <p class="bg-white text-center rounded-md shadow-md">No posts available!</p>
       </div>
     </div>
   </main>
@@ -42,11 +27,18 @@
 
 <script>
 import { useStore, computed } from '@nuxtjs/composition-api'
+import firestore from '~/services/firestore'
+
 export default {
   middleware: 'auth',
   setup() {
     const store = useStore()
     const posts = computed(() => store.state.posts.posts)
+
+    firestore.onCreated('posts', (data) => {
+      store.dispatch('posts/fetchPosts')
+      console.log('fetched: ', data)
+    })
 
     return {
       posts,

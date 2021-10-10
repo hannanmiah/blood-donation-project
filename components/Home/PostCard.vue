@@ -244,7 +244,7 @@
       </div>
       <div class="flex justify-end items-center">
         <h6 class="text-xs sm:text-sm md:text-base text-secondary-text">
-          ৫ মিনিট আগে
+          {{ post.createdAt }}
         </h6>
       </div>
     </div>

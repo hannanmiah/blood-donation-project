@@ -11,17 +11,44 @@
         <option value="B-">B-</option>
       </select>
       <input
+        v-model="searchString"
         class="input w-full"
         type="text"
         placeholder="লোকেশন অথবা ডোনারের অবস্থান"
         autofocus
       />
     </div>
+
+    <div v-if="searchResult.length" class="bg-gray-200 p-2">
+      <ul class="flex flex-col space-y-2 md:space-y-4">
+        <li v-for="result in searchResult" :key="result.objectID">
+          {{ result.body }}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
-export default {}
+import { watch, ref } from '@nuxtjs/composition-api'
+import algolia from '~/services/algolia'
+export default {
+  setup() {
+    const searchString = ref('')
+    const searchResult = ref([])
+
+    watch(searchString, (current) => {
+      algolia
+        .getIndex('posts')
+        .search(current)
+        .then(({ hits }) => {
+          searchResult.value = hits
+        })
+    })
+
+    return { searchString, searchResult }
+  },
+}
 </script>
 
 <style></style>
